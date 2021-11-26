@@ -26,7 +26,7 @@ def signin(request):
     password = request.POST['password']
 
     # validation
-    if not re.match("(?!.*[\.\-\_]{2,})^[a-zA-Z0-9\.\-\_]{3,24}$", username):
+    if not re.match("\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b", username):
         return JsonResponse({'error': 'Enter a valid email'})
 
     if len(password) < 8:
