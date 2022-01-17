@@ -20,7 +20,6 @@ export default function Home() {
             } else {
                 setProducts(data)
             }
-            // console.log(data)
         })
     }
 
