@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Base from '../core/Base'
 import {Link} from 'react-router-dom'
-import {singup} from '../auth/helper'
+import {signup, singup} from '../auth/helper'
 
 const Signup = () => {
 
@@ -19,6 +19,32 @@ const Signup = () => {
         event => {
             setValues({...values, error: false, [name]: event.target.value})
         }
+    
+    const onSubmit = (event) => {
+        event.preventDefault()
+        setValues({...values, error: false})
+        signup({name, email, password})
+        .then(data => {
+            console.log("DATA", data)
+            if (data.email === email){
+                setValues  ({
+                    ...values,
+                    name:"",
+                    email:"",
+                    password: "",
+                    error: "",
+                    success: true
+                })
+            } else {
+                setValues({
+                    ...values,
+                    error: true,
+                    success: false
+                })
+            }
+        })
+        .catch(e => console.log(e))
+    }
 
     const signUpForm = () => {
         return(
@@ -52,7 +78,12 @@ const Signup = () => {
                             type='password'
                             />
                         </div>
-                        <button className='btn btn-success btn-block'>Submit</button>
+                        <button
+                        onClick={onSubmit}
+                        className='btn btn-success btn-block'
+                        >
+                            Submit
+                        </button>
                     </form>
                 </div>
             </div>
@@ -62,7 +93,9 @@ const Signup = () => {
     return (
         <Base title='Sign Up Page' description='A signup for this E-commerce website'>
             {signUpForm()}
-            <p>Test of sign up page</p>            
+            <p className='text-white text-center'>
+                {JSON.stringify(values)}
+            </p>
         </Base>
     )
 }
