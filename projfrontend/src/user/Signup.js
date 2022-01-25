@@ -54,7 +54,11 @@ const Signup = () => {
                     className='alert alert-success'
                     style={{ display: success ? "" : "none" }}
                     >
-                        New account created successfully. You can login now.
+                        New account created successfully. You can <Link 
+                            to='/signin'
+                        >
+                        login now.
+                        </Link>
                     </div>
                 </div>
             </div>
