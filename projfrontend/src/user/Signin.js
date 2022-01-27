@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Base from '../core/Base'
-
+import { signin, authenticate, isAuthenticated } from '../auth/helper'
 
 const Signin = () => {
 
     const [values, setValues] = useState({
+        name: "",
         email: "",
         password: "",
         error: "",
@@ -14,12 +15,28 @@ const Signin = () => {
         didRedirect: false
     })
 
-    const { email, password, error, success, loading, didRedirect } = values
+    const { name, email, password, error, success, loading, didRedirect } = values
 
     const handleChange = name => 
         event => {
             setValues({...values, error: false, [name]: event.target.value})
         }
+
+    const onSubmit = (event) => {
+        event.preventDefault()
+        setValues({...values, error: false, loading: true})
+        signin({email, password})
+        .then(data => {
+            console.log("DATA", data)
+            if (data.token){
+                let sessionToken = data.token
+                authenticate(sessionToken, () => {
+                    console.log("TOKEN ADDED")
+                })
+            }
+        })
+        .catch(e => console.log(e))
+    }
 
     const successMessage = () => {
         return(
@@ -79,7 +96,7 @@ const Signin = () => {
                             />
                         </div>
                         <button
-                        onClick={()=>{}}
+                        onClick={onSubmit}
                         className='btn btn-success btn-block'
                         >
                             Submit
