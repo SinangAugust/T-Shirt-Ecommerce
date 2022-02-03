@@ -26,16 +26,16 @@ const Signin = () => {
         event.preventDefault()
         setValues({...values, error: false, loading: true})
         signin({email, password})
-        .then(data => {
-            console.log("DATA", data)
-            if (data.token){
-                let sessionToken = data.token
-                authenticate(sessionToken, () => {
-                    console.log("TOKEN ADDED")
-                })
-            }
-        })
-        .catch(e => console.log(e))
+            .then(data => {
+                console.log("DATA", data)
+                if (data.token){
+                    let sessionToken = data.token
+                    authenticate(sessionToken, () => {
+                        console.log("TOKEN ADDED")
+                    })
+                }
+            })
+            .catch(e => console.log(e))
     }
 
     const successMessage = () => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Base from '../core/Base'
 import {Link} from 'react-router-dom'
-import {signup, singup} from '../auth/helper'
+import {signup, signin} from '../auth/helper'
 
 const Signup = () => {
 
