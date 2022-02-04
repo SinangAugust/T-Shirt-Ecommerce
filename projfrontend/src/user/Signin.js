@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Base from '../core/Base'
 import { signin, authenticate, isAuthenticated } from '../auth/helper'
 
@@ -7,8 +7,8 @@ const Signin = () => {
 
     const [values, setValues] = useState({
         name: "",
-        email: "",
-        password: "",
+        email: "jars.5199@gmail.com",
+        password: "august123",
         error: "",
         success: false,
         loading: false,
@@ -32,10 +32,37 @@ const Signin = () => {
                     let sessionToken = data.token
                     authenticate(sessionToken, () => {
                         console.log("TOKEN ADDED")
+                        setValues({
+                            ...values,
+                            didRedirect
+                        })
+                    })
+                } else {
+                    setValues({
+                        ...values,
+                        loading: false
                     })
                 }
             })
             .catch(e => console.log(e))
+    }
+
+    const performRedirect = () => {
+        if (isAuthenticated()){
+            return <Redirect to="/"/>
+        }
+    }
+
+    const loadingMessage = () => {
+        return(
+            loading && (
+                <div className='alert alert-info'>
+                    <h2>
+                        Loading...
+                    </h2>
+                </div>
+            )
+        )
     }
 
     const successMessage = () => {
@@ -109,10 +136,12 @@ const Signin = () => {
 
     return(
         <Base title='Signin Page' description='A t-shirt store'>
+            {loadingMessage()}
             {signInForm()}
             <p className='text-center'>
                 {JSON.stringify(values)}
             </p>
+            {performRedirect()}
         </Base>
     )
 }
