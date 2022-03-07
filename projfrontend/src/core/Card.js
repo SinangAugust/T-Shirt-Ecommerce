@@ -35,7 +35,7 @@ const Card = ({
 
     const showAddToCart = addToCart => {
       return(
-        addToCart && (
+        addtoCart && (
           <button
                 onClick={addToCart}
                 className="btn btn-block btn-outline-success mt-2 mb-2"
