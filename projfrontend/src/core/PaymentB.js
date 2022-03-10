@@ -42,10 +42,45 @@ const PaymentB = ({
         })
     }
 
+    useEffect(() => {
+        getToken(userId, token)
+    }, [])
+
+    const getAmount = () => {
+        let amount = 0
+        products.map(p => {
+            amount = amount + parseInt(p.price)
+        })
+        return amount
+    }
+
+    const showbtnDropIn = () => {
+        return(
+            <div>
+                {
+                    info.clientToken !== null && products.length > 0
+                    ? (
+                        <div>
+                            <DropIn
+                            options={{authorization: info.clientToken}}
+                            onInstance={instance => (info.instance = instance)}
+                            />
+                                <button className='btn btn-block btn-success'>Purchase</button> 
+                        </div>
+                    )  
+                    : (
+                        <h3>Please login or add something to cart</h3>
+                    )
+                }
+            </div>
+        )
+    }
+
     return (
         <div>
             <h1>
-                Payment B
+                Your bill is {getAmount()}
+                {showbtnDropIn()}
             </h1>
         </div>
     )
