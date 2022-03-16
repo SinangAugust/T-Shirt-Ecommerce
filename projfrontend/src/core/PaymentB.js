@@ -54,6 +54,75 @@ const PaymentB = ({
         return amount
     }
 
+    const onPurchase = () => {
+        setInfo({loading: true})
+        let nonce 
+        let getNonce = info.instance.requestPaymentMethod()
+        .then( data => {
+            nonce = data.nonce
+            const paymentData = {
+                paymentMethodNonce: nonce,
+                amount: getAmount()
+            }
+            processPayment(userId, token, paymentData)
+            .then(response => {
+                if (response.error){
+                    if (response.code == '1'){
+                        console.log("PAYMENT FAILED")
+                        signout(() => {
+                            return <Redirect to="/"/>
+                        })
+                    }
+                } else{
+                    setInfo({...info, 
+                        success: response.success,
+                        loading: false
+                    })
+                    console.log("PAYMENT SUCCESS")
+
+                    let product_names = ""
+                    products.forEach(function(item){
+                        product_names += item.name + ", "
+                    })
+
+                    const orderData = {
+                        products: product_names,
+                        transaction_id: response.transaction.id,
+                        amount: response.transaction.amount
+                    }
+
+                    createOrder(userId, token, orderData)
+                    .then(response => {
+                        if (response.error){
+                            if (response.code == '1'){
+                                console.log("ORDER FAILED")
+                            }
+                            signout(() => {
+                                return <Redirect to="/"/>
+                            })
+                        } else{
+                            if (response.success == true) {
+                                console.log("ORDER PLACED")
+                            }
+                        }
+                    })
+                    .catch(err => {
+                        setInfo({loading: false, success: false})
+                        console.log("ORDER FAILED", err)
+                    })
+
+                    cartEmpty(() => {
+                        console.log("CRASH?")
+                    })
+
+                    setReload(!reload)
+                }
+            })
+            .catch(err => console.log(err))
+        })
+        .catch(err => console.log("NONCE", err))
+    }
+
     const showbtnDropIn = () => {
         return(
             <div>
@@ -79,7 +148,7 @@ const PaymentB = ({
     return (
         <div>
             <h1>
-                Your bill is {getAmount()}
+                Your bill is ${getAmount()}
                 {showbtnDropIn()}
             </h1>
         </div>
