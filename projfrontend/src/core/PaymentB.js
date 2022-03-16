@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import {Redirect} from 'react-router-dom'
-import {cartEmpty} from './helper/cartHelper/'
 import {getMeToken, processPayment} from './helper/paymentHelper'
 import {createOrder} from './helper/orderHelper'
 import {isAuthenticated, signout} from '../auth/helper'
 
 import DropIn from 'braintree-web-drop-in-react'
+import { cartEmpty } from './helper/cartHelper'
 
 const PaymentB = ({
     products,
