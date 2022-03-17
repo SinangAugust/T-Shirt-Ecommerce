@@ -134,7 +134,9 @@ const PaymentB = ({
                             options={{authorization: info.clientToken}}
                             onInstance={instance => (info.instance = instance)}
                             />
-                                <button className='btn btn-block btn-success'>Purchase</button> 
+                                <button 
+                                onClick={onPurchase}
+                                className='btn btn-block btn-success'>Purchase</button> 
                         </div>
                     )  
                     : (
