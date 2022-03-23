@@ -57,8 +57,8 @@ const PaymentB = ({
     const onPurchase = () => {
         setInfo({loading: true})
         let nonce 
-        let getNonce = info.instance.requestPaymentMethod()
-        .then( data => {
+        let getNonce = info.instance.requestPaymentMethod().then( data => {
+            console.log("MYDATA", data)
             nonce = data.nonce
             const paymentData = {
                 paymentMethodNonce: nonce,
@@ -134,9 +134,11 @@ const PaymentB = ({
                             options={{authorization: info.clientToken}}
                             onInstance={instance => (info.instance = instance)}
                             />
-                                <button 
+                                <button
                                 onClick={onPurchase}
-                                className='btn btn-block btn-success'>Purchase</button> 
+                                className='btn btn-block btn-success'>
+                                    Purchase
+                                </button> 
                         </div>
                     )  
                     : (
